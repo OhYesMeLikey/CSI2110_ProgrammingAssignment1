@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.lang.Math;
+import java.io.*;
 
 public class Max_Min_Heap {
 	private ArrayList<Integer> max_heap;
@@ -19,8 +20,84 @@ public class Max_Min_Heap {
 	If the string is a word, then it will call a specific method.
 	Else the number will just be used as the parameters to the corresponding method.
 	*/
-	private void readAndSave (String fileName){
-		
+	private void readAndSave (String fileName) throws Exception{
+        File file = new File(fileName);
+
+		BufferedReader br = new BufferedReader(new FileReader(file));
+
+		String line;
+		ArrayList<Integer> arrOfNum = new ArrayList<Integer>();
+		int counter = 0;
+		int size = 0;
+
+		while ((line = br.readLine()) != null){
+			counter++;
+
+			System.out.println(line);
+			line.toLowerCase();
+			String str = "";
+			String numStr = "";
+
+			for (int i = 0; i < line.length(); i++) {
+				char ch = line.charAt(i);
+				if ( Character.isLetter(line.charAt(i)) ) {
+					str += ch;
+				}
+				else if ( Character.isDigit(line.charAt(i)) ) {
+					numStr += ch;
+				}
+			}
+
+			if ( counter == 1 ) {
+				if ( str.equals("construct") ) {
+					size = Integer.parseInt(numStr);
+				}
+			}
+			else if ( counter == 2 ) {
+				String [] arrOfStr = line.split(" ");
+
+				for (int i = 0; i < size; i++) {
+					arrOfNum.add( Integer.parseInt(arrOfStr[i]) );
+				}
+
+				if ( size % 2 == 1 ) {
+					buffer = arrOfNum.remove( arrOfNum.size() - 1 );
+				}
+				for (int i = 0; i < arrOfNum.size(); i++) {
+					if ( i < arrOfNum.size()/2 ) {
+						min_heap.add( arrOfNum.get(i) );
+					}
+					else {
+						max_heap.add( arrOfNum.get(i) );
+					}
+				}
+
+				//printHeap(min_heap);
+                //System.out.println();
+				//printHeap(max_heap);
+			}
+			else {
+				if ( str.equals("insert") ) {
+					//call insert method with the integer representation of numStr
+					//System.out.println("insert works");
+				}
+				else if ( str.equals("removeMin") || str.equals("removemin") ) {
+					//call removeMin method
+					//System.out.println("removeMin works");
+				}
+				else if ( str.equals("removeMax") || str.equals("removemax") ) {
+					//call removeMax method
+					//System.out.println("removeMax works");
+				}
+			}
+		}
+    }
+
+	private void printHeap (ArrayList<Integer> arrList){
+		System.out.println("This is the following Array List");
+		for (int num : arrList) {
+			System.out.print(num + " ");
+		}
 	}
 
 	public void execution(String in_path, String out_path){
@@ -109,7 +186,7 @@ public class Max_Min_Heap {
 	private int posInHeap(ArrayList<Integer> heap, int level){
 		int height = height(heap);
 		int depth = 0;
-		int pos;
+		int pos = 0;
 		if ( level >= 0 && level <= height ) {
 			while ( depth < level ) {
 				pos += Math.pow(2, depth);
@@ -164,7 +241,7 @@ public class Max_Min_Heap {
 				buffer = max_heap.remove( max_heap.size() - 1 );
 			}
 			else {
-				toMaxHeapify( min_heap.get(0), 0 )
+				toMaxHeapify( min_heap.get(0), 0 );
 			}
 		}
 		return copy;
@@ -206,7 +283,7 @@ public class Max_Min_Heap {
 				buffer = min_heap.remove( min_heap.size() - 1 );
 			}
 			else {
-				toMinHeapify( max_heap.get(0), 0 )
+				toMinHeapify( max_heap.get(0), 0 );
 			}
 		}
 		return copy;
@@ -215,14 +292,14 @@ public class Max_Min_Heap {
 	/*
 	// execution of insert a new element operation
 	Adding a new element is done as follows:
-		● If the buffer is empty, then insert the new element in it.
-		● Else if the buffer contains already an element, we have two elements to insert to the min-max-heap.
-			1. Compare the new element and the element in the buffer. Insert a smaller element into the min-heap as a last element and insert a bigger element into the max-heap as a last element. Empty buffer.
-			2. Heapify
-				2.1. For the last element in min-heap, run toMinHeapify, i.e. upheap in the min-heap.
-					2.2. For the last element in max-heap, run toMinHeapify (see Figure 5(b))
-					2.3. For a last element in max-heap, run toMaxHeapify, i.e. upheap in the max-heap
-					2.4. For a last element in min-heap, run toMaxHeapify (see Figure 5(c)
+	If the buffer is empty, then insert the new element in it.
+	Else if the buffer contains already an element, we have two elements to insert to the min-max heap.
+		1. Compare the new element and the element in the buffer. Insert a smaller element into the min-heap as a last element and insert a bigger element into the max-heap as a last element. Empty buffer.
+		2. Heapify
+			2.1. For the last element in min-heap, run toMinHeapify, i.e. upheap in the min-heap.
+			2.2. For the last element in max-heap, run toMinHeapify (see Figure 5(b))
+			2.3. For a last element in max-heap, run toMaxHeapify, i.e. upheap in the max-heap
+			2.4. For a last element in min-heap, run toMaxHeapify (see Figure 5(c)
 	*/
 	public void insertItem(int elem){
 		if ( buffer == null ) {
@@ -238,8 +315,10 @@ public class Max_Min_Heap {
 
 	}
 
-	public static void main(String args[]){
+	public static void main(String args[]) throws Exception{
 		Max_Min_Heap heap = new Max_Min_Heap();
+		String input_path = "";
+		String output_path = "";
 		heap.execution(input_path, output_path);
 	}
 }
