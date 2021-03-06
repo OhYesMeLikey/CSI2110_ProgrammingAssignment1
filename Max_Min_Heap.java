@@ -17,7 +17,7 @@ public class Max_Min_Heap {
 	/*
 	Takes in the name of file.
 	Reads character by character by appending them to determine whether the string is a word or a number.
-	If the string is a word, then it will call a specific method.
+	If the string is a word, then it will call the corresponding method.
 	Else the number will just be used as the parameters to the corresponding method.
 	*/
 	private void readAndSave (String fileName) throws Exception{
@@ -93,26 +93,33 @@ public class Max_Min_Heap {
 		}
     }
 
+	/*
+	Prints out the numbers of a heap
+	*/
 	private void printHeap (ArrayList<Integer> arrList){
-		System.out.println("This is the following Array List");
+		System.out.println("\nThis is the following Array List:");
 		for (int num : arrList) {
 			System.out.print(num + " ");
 		}
+		System.out.println();
 	}
 
+	/*
+	1) read the data and save into max_heap, min_heap, and buffer;
+	2) call heapConstruction() to arrange the max_heap, min_heap, and buffer to create max-min heap
+	3) record the current state of the heap
+	4) read the operations from the file.
+	5) according to each operation, call removeMin(), removeMax(), or insertItem(ele) respectively.
+		Record the heap's state of each operation
+	6) save the states after each operation together by calling save(out_path) function
+	 */
 	public void execution(String in_path, String out_path){
-		/* 1) read the data and save into max_heap, min_heap, and buffer;
-		 * 2) call heapConstruction() to arrange the max_heap, min_heap, and buffer to create max-min heap
-		 * 3) record the current state of the heap
-		 * 4) read the operations from the file.
-		 * 5) according to each operation, call removeMin(), removeMax(), or insertItem(ele) respectively.
-		 *	 Record the heap's state of each operation
-		 * 6) save the states after each operation together by calling save(out_path) function
-		 */
+		ArrayList<String> commands = new ArrayList<String>();
 	}
 
 	/*
 	// execution of bottom-up heap construction according to the algorithm
+
 	Bottom up heap construction for min-max-heap is done as follows:
 	1. Swap external elements on last level in the min-heap with associate elements in the max-heap.
 	2. For ( current_level = last level - 1; current_level >= 1; current_level -= 1) {
@@ -123,28 +130,15 @@ public class Max_Min_Heap {
 		swapAssociates();
 	}
 
+	/*
+	For each number in min_heap that are associated with each number in max_heap, swap them
+	*/
 	private void swapAssociates(){
-		/*
-		int biggerSize;
-		if ( max_heap.size() > min_heap.size() ) {
-			biggerSize = max_heap.size();
-			for (int i = posInHeap(max_heap, height(max_heap)); i > 0; i--) {
-				if ( associated(max_heap, min_heap, i) ) {
-					swapExternal(max_heap, min_heap, i);
-				}
+		for (int i = posInHeap(min_heap, height(min_heap)); i > 0; i--) {
+			if ( associated(min_heap, max_heap, i) ) {
+				swapExternal(min_heap, max_heap, i);
 			}
 		}
-		else {
-			biggerSize = min_heap.size();
-			for (int i = posInHeap(min_heap, height(min_heap)); i > 0; i--) {
-				if ( associated(max_heap, min_heap, i) ) {
-					swapExternal(max_heap, min_heap, i);
-				}
-			}
-		}
-		*/
-
-
 	}
 
 	/*
@@ -162,7 +156,7 @@ public class Max_Min_Heap {
 	/*
 	If the external element in the min-heap is bigger than its associate element in the max-heap, swap them.
 	*/
-	private void swapExternal(ArrayList<Integer> bigHeap, ArrayList<Integer> smallHeap, int pos){
+	private void swapExternal(ArrayList<Integer> smallHeap, ArrayList<Integer> bigHeap, int pos){
 		if ( smallHeap.get(pos).compareTo( bigHeap.get(pos) ) > 0 ) {
 			Integer copy = smallHeap.get(pos);
 			smallHeap.set(pos, bigHeap.get(pos));
@@ -204,7 +198,6 @@ public class Max_Min_Heap {
 	}
 
 	/*
-	// execution of remove min operation
 	Remove element in the root position and move the last element to root position then downheap the element following a path toward an external node until swapping is not required.
 
 	Removing the min element is done as follows:
@@ -246,8 +239,6 @@ public class Max_Min_Heap {
 	}
 
 	/*
-	// execution of remove max operation
-
 	Remove element in the root position and move the last element to root position then downheap the element following a path toward an external node until swapping is not required.
 
 	Removing the max element is done by following the same procedure as for the removal of the min element as explained above, except that it now operates from the max-heap.
@@ -288,7 +279,6 @@ public class Max_Min_Heap {
 	}
 
 	/*
-	// execution of insert a new element operation
 	Adding a new element is done as follows:
 	If the buffer is empty, then insert the new element in it.
 	Else if the buffer contains already an element, we have two elements to insert to the min-max heap.
@@ -318,6 +308,9 @@ public class Max_Min_Heap {
 		}
 	}
 
+	/*
+	Calls the methods toMinHeapify and toMaxHeapify to fix the structures of how a min heap and max heap should be like
+	*/
 	private void heapify(int elem1, int elem2, int level){
 		toMinHeapify(elem1, level);
 		toMaxHeapify(elem2, level);
