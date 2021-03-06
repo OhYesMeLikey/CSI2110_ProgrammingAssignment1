@@ -78,16 +78,16 @@ public class Max_Min_Heap {
 			}
 			else {
 				if ( str.equals("insert") ) {
-					//call insert method with the integer representation of numStr
 					//System.out.println("insert works");
+					insert(Integer.parseInt(numStr));
 				}
 				else if ( str.equals("removeMin") || str.equals("removemin") ) {
-					//call removeMin method
 					//System.out.println("removeMin works");
+					removeMin();
 				}
 				else if ( str.equals("removeMax") || str.equals("removemax") ) {
-					//call removeMax method
 					//System.out.println("removeMax works");
+					removeMax();
 				}
 			}
 		}
@@ -113,7 +113,6 @@ public class Max_Min_Heap {
 
 	/*
 	// execution of bottom-up heap construction according to the algorithm
-
 	Bottom up heap construction for min-max-heap is done as follows:
 	1. Swap external elements on last level in the min-heap with associate elements in the max-heap.
 	2. For ( current_level = last level - 1; current_level >= 1; current_level -= 1) {
@@ -197,16 +196,15 @@ public class Max_Min_Heap {
 	}
 
 	// execute the toMaxHeapify operation according to the algorithm
-	private void toMaxHeapify(Integer elem, int level){
+	private void toMaxHeapify(int elem, int level){
 	}
 
 	// execute the toMinHeapify operation according to the algorithm
-	private void toMinHeapify(Integer elem, int level){
+	private void toMinHeapify(int elem, int level){
 	}
 
 	/*
 	// execution of remove min operation
-
 	Remove element in the root position and move the last element to root position then downheap the element following a path toward an external node until swapping is not required.
 
 	Removing the min element is done as follows:
@@ -294,20 +292,35 @@ public class Max_Min_Heap {
 	Adding a new element is done as follows:
 	If the buffer is empty, then insert the new element in it.
 	Else if the buffer contains already an element, we have two elements to insert to the min-max heap.
-		1. Compare the new element and the element in the buffer. Insert a smaller element into the min-heap as a last element and insert a bigger element into the max-heap as a last element. Empty buffer.
-		2. Heapify
-			2.1. For the last element in min-heap, run toMinHeapify, i.e. upheap in the min-heap.
-			2.2. For the last element in max-heap, run toMinHeapify (see Figure 5(b))
-			2.3. For a last element in max-heap, run toMaxHeapify, i.e. upheap in the max-heap
-			2.4. For a last element in min-heap, run toMaxHeapify (see Figure 5(c)
+	1. Compare the new element and the element in the buffer. Insert a smaller element into the min-heap as a last element and insert a bigger element into the max-heap as a last element. Empty buffer.
+	2. Heapify
+		2.1. For the last element in min-heap, run toMinHeapify, i.e. upheap in the min-heap.
+		2.2. For the last element in max-heap, run toMinHeapify (see Figure 5(b))
+		2.3. For a last element in max-heap, run toMaxHeapify, i.e. upheap in the max-heap
+		2.4. For a last element in min-heap, run toMaxHeapify (see Figure 5(c)
 	*/
 	public void insertItem(int elem){
 		if ( buffer == null ) {
 			buffer = elem;
 		}
 		else {
+			if ( elem < buffer ) {
+				min_heap.add(elem);
+				max_heap.add(buffer);
+			}
+			else {
+				min_heap.add(buffer);
+				max_heap.add(elem);
+			}
+			buffer = null;
 
+			heapify( min_heap.get(min_heap.size() - 1), max_heap.get(max_heap.size() - 1), posInHeap( min_heap, height(min_heap) ) );
 		}
+	}
+
+	private void heapify(int elem1, int elem2, int level){
+		toMinHeapify(elem1, level);
+		toMaxHeapify(elem2, level);
 	}
 
 	// save the data in the required format
