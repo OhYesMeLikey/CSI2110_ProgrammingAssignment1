@@ -6,7 +6,7 @@ public class Max_Min_Heap {
 	private ArrayList<Integer> max_heap;
 	private ArrayList<Integer> min_heap;
 	private Integer buffer;
-
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	private int parent(int j){
 		return ((j-1)/2);
 	}
@@ -265,13 +265,19 @@ public class Max_Min_Heap {
 	/*
 	We apply downheap operation in min-heap for x and it is connected to upheap operation in the max-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in max-heap is level i . The default level i is the level of the root node in the max-heap.
 	*/
-	private void toMaxHeapify(int elem, int level){
+	private void toMaxHeapify(int elem, int pos){
+		downHeap(pos, min_heap);
+		swapExternal( min_heap, max_heap, posInHeap(min_heap, height(min_heap)) );
+		upHeap( posInHeap(max_heap, height(max_heap)), max_heap );
 	}
 
 	/*
 	We apply downheap operation in max-heap for x and it is connected to upheap operation in the min-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in min-heap is level i . The default level i is the level of the root node in the min-heap.
 	*/
-	private void toMinHeapify(int elem, int level){
+	private void toMinHeapify(int elem, int pos){
+		downHeap(pos, max_heap);
+		swapExternal( min_heap, max_heap, posInHeap(max_heap, height(max_heap)) );
+		upHeap( posInHeap(min_heap, height(min_heap)), min_heap );
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
