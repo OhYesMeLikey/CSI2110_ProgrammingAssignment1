@@ -79,7 +79,7 @@ public class Max_Min_Heap {
 			else {
 				if ( str.equals("insert") ) {
 					//System.out.println("insert works");
-					insert(Integer.parseInt(numStr));
+					insertItem(Integer.parseInt(numStr));
 				}
 				else if ( str.equals("removeMin") || str.equals("removemin") ) {
 					//System.out.println("removeMin works");
