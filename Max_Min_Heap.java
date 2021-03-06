@@ -69,7 +69,7 @@ public class Max_Min_Heap {
 			j = smallChildIndex;
 		}
 	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	public Max_Min_Heap(){
 		//initialize max_heap, min_heap, and buffer
 		max_heap = new ArrayList<Integer>();
