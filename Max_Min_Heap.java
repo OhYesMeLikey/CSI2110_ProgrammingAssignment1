@@ -7,6 +7,69 @@ public class Max_Min_Heap {
 	private ArrayList<Integer> min_heap;
 	private Integer buffer;
 
+	private int parent(int j){
+		return ((j-1)/2);
+	}
+
+	private int left(int j){
+		return ((2*j) + 1);
+	}
+
+	private int right(int j){
+		return ((2*j) + 2);
+	}
+
+	private boolean hasLeft(int j, ArrayList<Integer> heap){
+		return (left(j) < heap.size());
+	}
+
+	private boolean hasRight(int j, ArrayList<Integer> heap){
+		return (right(j) < heap.size());
+	}
+
+	private void swap (int i, int j, ArrayList<Integer> heap){
+		Integer temp = heap.get(i);
+		heap.set(i, heap.get(j));
+		heap.set(j, temp);
+	}
+
+	private int compare(Integer a, Integer b){
+		return a.compareTo(b);
+	}
+
+	private void upHeap(int j, ArrayList<Integer> heap){
+		while (j > 0) {
+			int p = parent(j);
+			if ( compare( heap.get(j), heap.get(p) ) >= 0 ) {
+				break;
+			}
+
+			swap(j, p, heap);
+			j = p;
+		}
+	}
+
+	private void downHeap(int j, ArrayList<Integer> heap){
+		while ( hasLeft(j, heap) ) {
+			int leftIndex = left(j);
+			int smallChildIndex = leftIndex;
+
+			if ( hasRight(j, heap) ) {
+				int rightIndex = right(j);
+				if ( compare(heap.get(leftIndex), heap.get(rightIndex)) > 0 ) {
+					smallChildIndex = rightIndex;
+				}
+			}
+
+			if ( compare(heap.get(smallChildIndex), heap.get(j)) >= 0 ) {
+				break;
+			}
+
+			swap(j, smallChildIndex, heap);
+			j = smallChildIndex;
+		}
+	}
+
 	public Max_Min_Heap(){
 		//initialize max_heap, min_heap, and buffer
 		max_heap = new ArrayList<Integer>();
@@ -80,7 +143,7 @@ public class Max_Min_Heap {
 	/*
 	Runs each command in the given listOfCmds which contains the sequential order of all of the commands from an input text file.
 	*/
-	private void runTheCommands(ArrayList<String> listOfCmds){
+	private void runTheCommands(ArrayList<String> listOfCmds, String out_path){
 		//System.out.println("It works");
 		int cmd = 0;
 
@@ -96,11 +159,12 @@ public class Max_Min_Heap {
 					removeMin();
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMax") ) {
-					System.out.println("Call method removeMax");
+					//System.out.println("Call method removeMax");
 					removeMax();
 				}
 			}
 			cmd++;
+			saveToFile(out_path);
 		}
 	}
 
@@ -153,7 +217,7 @@ public class Max_Min_Heap {
 				myWriter.write( "buffer " + buffer + "\n" );
 			}
 			myWriter.close();
-			System.out.println("Successfully wrote to the file.");
+			//System.out.println("Successfully wrote to the file.");
 		}
 		catch (IOException e) {
 			System.out.println("An error occurred.");
@@ -173,9 +237,11 @@ public class Max_Min_Heap {
 	public void execution(String in_path, String out_path) throws Exception{
 		ArrayList<String> commands = readEverything (in_path);
 
-		//call heapConstruction here
+		heapConstruction();
 
+		saveToFile(out_path);
 
+		runTheCommands(commands, out_path);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
@@ -184,10 +250,28 @@ public class Max_Min_Heap {
 	Bottom up heap construction for min-max-heap is done as follows:
 	1. Swap external elements on last level in the min-heap with associate elements in the max-heap.
 	2. For ( current_level = last level - 1; current_level >= 1; current_level -= 1) {
-	toMaxHeapify elements on current_level in min-heap to level current_level+1 in max-heap toMinHeapify elements on current_level in max-heap to level current_level in min-heap}
+		toMaxHeapify elements on current_level in min-heap to level current_level+1 in max-heap toMinHeapify elements on current_level in max-heap to level current_level in min-heap}
 	*/
 	private void heapConstruction(){
 		swapAssociates();
+
+		for (int posInCurrentLevel = posInHeap(min_heap, height(min_heap) - 1); posInCurrentLevel >= 1; posInCurrentLevel--) {
+			toMaxHeapify(min_heap.get(posInCurrentLevel), posInCurrentLevel);
+
+			toMinHeapify(max_heap.get(posInCurrentLevel), posInCurrentLevel);
+		}
+	}
+
+	/*
+	We apply downheap operation in min-heap for x and it is connected to upheap operation in the max-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in max-heap is level i . The default level i is the level of the root node in the max-heap.
+	*/
+	private void toMaxHeapify(int elem, int level){
+	}
+
+	/*
+	We apply downheap operation in max-heap for x and it is connected to upheap operation in the min-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in min-heap is level i . The default level i is the level of the root node in the min-heap.
+	*/
+	private void toMinHeapify(int elem, int level){
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
@@ -366,14 +450,6 @@ public class Max_Min_Heap {
 	private void heapify(int elem1, int elem2, int level){
 		toMinHeapify(elem1, level);
 		toMaxHeapify(elem2, level);
-	}
-
-	// execute the toMaxHeapify operation according to the algorithm
-	private void toMaxHeapify(int elem, int level){
-	}
-
-	// execute the toMinHeapify operation according to the algorithm
-	private void toMinHeapify(int elem, int level){
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
