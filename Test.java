@@ -133,6 +133,11 @@ public class Test{
 		}
 	}
 
+    private static void printEverything (){
+        System.out.println("This is max heap: " + );
+
+    }
+
     public static void main(String[] args) throws Exception{
         // We need to provide file path as the parameter:
         // double backquote is to avoid compiler interpret words
@@ -142,12 +147,14 @@ public class Test{
         //readAndSave ("C:\\Users\\Leo Tan\\Desktop\\CSI 2110 [D]\\Assignments\\ProgrammingA1\\input1.txt");
 
         //String location = "C:\\Users\\Leo Tan\\Desktop\\CSI 2110 [D]\\Assignments\\ProgrammingA1\\input1.txt";
-        String input1 = "input1.txt";
+
+        /*String input1 = "input1.txt";
         String output1 = "output1.txt";
 
         runTheCommands (readEverything(input1));
         createFile(output1);
         saveToFile(output1);
+        */
 
     }
 
