@@ -6,79 +6,6 @@ public class Test{
     private static ArrayList<Integer> min_heap = new ArrayList<Integer>();
     private static Integer buffer = null;
 
-    private static void readAndSave(String fileName) throws Exception{
-        File file = new File(fileName);
-
-        BufferedReader br = new BufferedReader(new FileReader(file));
-
-        String line;
-        ArrayList<Integer> arrOfNum = new ArrayList<Integer>();
-        int counter = 0;
-        int size = 0;
-
-        while ((line = br.readLine()) != null){
-            counter++;
-
-            System.out.println(line);
-            line.toLowerCase();
-            String str = "";
-            String numStr = "";
-
-            for (int i = 0; i < line.length(); i++) {
-                char ch = line.charAt(i);
-                if ( Character.isLetter(line.charAt(i)) ) {
-                    str += ch;
-                }
-                else if ( Character.isDigit(line.charAt(i)) ) {
-                    numStr += ch;
-                }
-            }
-
-            if ( counter == 1 ) {
-                if ( str.equals("construct") ) {
-                    size = Integer.parseInt(numStr);
-                }
-            }
-            else if ( counter == 2 ) {
-                String [] arrOfStr = line.split(" ");
-
-                for (int i = 0; i < size; i++) {
-                    arrOfNum.add( Integer.parseInt(arrOfStr[i]) );
-                }
-
-                if ( size % 2 == 1 ) {
-                    buffer = arrOfNum.remove( arrOfNum.size() - 1 );
-                }
-                for (int i = 0; i < arrOfNum.size(); i++) {
-                    if ( i < arrOfNum.size()/2 ) {
-                        min_heap.add( arrOfNum.get(i) );
-                    }
-                    else {
-                        max_heap.add( arrOfNum.get(i) );
-                    }
-                }
-
-                printHeap(min_heap);
-                //System.out.println();
-                //printHeap(max_heap);
-            }
-            else {
-                if ( str.equals("insert") ) {
-                    //call insert method with the integer representation of numStr
-                    //System.out.println("insert works");
-                }
-                else if ( str.equals("removeMin") || str.equals("removemin") ) {
-                    //call removeMin method
-                    //System.out.println("removeMin works");
-                }
-                else if ( str.equals("removeMax") || str.equals("removemax") ) {
-                    //call removeMax method
-                    //System.out.println("removeMax works");
-                }
-            }
-        }
-    }
-
     private static void storeIntoHeaps(String[] arrOfStr, int size){
         ArrayList<Integer> arrOfNum = new ArrayList<Integer>();
 
@@ -157,13 +84,54 @@ public class Test{
         }
     }
 
-    private static void printHeap (ArrayList<Integer> arrList){
-        System.out.println("\nThis is the following Array List:");
-        for (int num : arrList) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
-    }
+    private static void createFile(String out_path){
+		try {
+			File myObj = new File(out_path);
+			if (myObj.createNewFile()) {
+				System.out.println("File created: " + myObj.getName());
+			} else {
+				System.out.println("File already exists.");
+			}
+		}
+		catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+
+	private static String transformIntoString(ArrayList<Integer> heap, String heapName){
+		String output = heapName;
+		for (int i = 0; i < heap.size(); i++) {
+			if ( i == heap.size() - 1 ) {
+				output += Integer.toString(heap.get(i));
+			}
+			else {
+				output += Integer.toString(heap.get(i)) + " ";
+			}
+		}
+		return output;
+	}
+
+	// save the data in the required format
+	private static void saveToFile(String out_path){
+        try {
+			FileWriter myWriter = new FileWriter(out_path);
+			myWriter.write( transformIntoString(max_heap, "max-heap ") + "\n" );
+			myWriter.write( transformIntoString(min_heap, "min-heap ") + "\n" );
+			if ( buffer == null ) {
+				myWriter.write( "buffer " + "\n" );
+			}
+			else {
+				myWriter.write( "buffer " + buffer + "\n" );
+			}
+			myWriter.close();
+			System.out.println("Successfully wrote to the file.");
+		}
+		catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
 
     public static void main(String[] args) throws Exception{
         // We need to provide file path as the parameter:
@@ -173,9 +141,14 @@ public class Test{
         //File file = new File("input1.txt");
         //readAndSave ("C:\\Users\\Leo Tan\\Desktop\\CSI 2110 [D]\\Assignments\\ProgrammingA1\\input1.txt");
 
-        String location = "C:\\Users\\Leo Tan\\Desktop\\CSI 2110 [D]\\Assignments\\ProgrammingA1\\input1.txt";
+        //String location = "C:\\Users\\Leo Tan\\Desktop\\CSI 2110 [D]\\Assignments\\ProgrammingA1\\input1.txt";
+        String input1 = "input1.txt";
+        String output1 = "output1.txt";
 
-        runTheCommands (readEverything(location));
+        runTheCommands (readEverything(input1));
+        createFile(output1);
+        saveToFile(output1);
+
     }
 
 }
