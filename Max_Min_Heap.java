@@ -13,14 +13,97 @@ public class Max_Min_Heap {
 		min_heap = new ArrayList<Integer>();
 		buffer = null;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	private static void storeIntoHeaps(String[] arrOfStr, int size){
+        ArrayList<Integer> arrOfNum = new ArrayList<Integer>();
 
+        for (int i = 0; i < size; i++) {
+            arrOfNum.add( Integer.parseInt(arrOfStr[i]) );
+        }
+
+        if ( size % 2 == 1 ) {
+            buffer = arrOfNum.remove( arrOfNum.size() - 1 );
+        }
+        for (int i = 0; i < arrOfNum.size(); i++) {
+            if ( i < arrOfNum.size()/2 ) {
+                min_heap.add( arrOfNum.get(i) );
+            }
+            else {
+                max_heap.add( arrOfNum.get(i) );
+            }
+        }
+    }
+
+    private static ArrayList<String> readEverything(String fileName) throws Exception{
+        File file = new File(fileName);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String line = "";
+        ArrayList<String> cmds = new ArrayList<String>();
+
+        while ((line = br.readLine()) != null){
+            System.out.println(line);
+            //System.out.println("This is line: " + line);
+            if ( line.length() > 0 && Character.isDigit(line.charAt(0)) ) {
+                String[] nums = line.split(" ");
+                storeIntoHeaps(nums, nums.length);
+                cmds.add(line);
+            }
+            else {
+                //System.out.println(line);
+                line.toLowerCase();
+                String str = "";
+                String numStr = "";
+
+                for (int i = 0; i < line.length(); i++) {
+                    char ch = line.charAt(i);
+                    if ( Character.isLetter(line.charAt(i)) ) {
+                        str += ch;
+                    }
+                    else if ( Character.isDigit(line.charAt(i)) ) {
+                        numStr += ch;
+                    }
+                }
+                cmds.add(str);
+                cmds.add(numStr);
+            }
+        }
+        return cmds;
+    }
+
+    private static void runTheCommands(ArrayList<String> listOfCmds){
+        //System.out.println("It works");
+        int cmd = 0;
+
+        while ( cmd < listOfCmds.size() ) {
+            if ( cmd >= 3 ) {
+                //System.out.println("It works again");
+                if ( listOfCmds.get(cmd).equals("insert") ) {
+                    System.out.println("Call method insertItem and send the next item in the list as the number to be inserted by doing ++cmd");
+                }
+                else if ( listOfCmds.get(cmd).equals("removeMin") ) {
+                    System.out.println("Call method removeMin");
+                }
+                else if ( listOfCmds.get(cmd).equals("removeMax") ) {
+                    System.out.println("Call method removeMax");
+                }
+            }
+            cmd++;
+        }
+    }
+
+	// save the data in the required format
+	private void save(String out_path){
+
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	Takes in the name of file.
 	Reads character by character by appending them to determine whether the string is a word or a number.
 	If the string is a word, then it will call the corresponding method.
 	Else the number will just be used as the parameters to the corresponding method.
 	*/
-	private void readAndSave (String fileName) throws Exception{
+	/*private void readAndSave (String fileName) throws Exception{
         File file = new File(fileName);
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -92,18 +175,8 @@ public class Max_Min_Heap {
 			}
 		}
     }
-
-	/*
-	Prints out the numbers of a heap
 	*/
-	private void printHeap (ArrayList<Integer> arrList){
-		System.out.println("\nThis is the following Array List:");
-		for (int num : arrList) {
-			System.out.print(num + " ");
-		}
-		System.out.println();
-	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	1) read the data and save into max_heap, min_heap, and buffer;
 	2) call heapConstruction() to arrange the max_heap, min_heap, and buffer to create max-min heap
@@ -114,9 +187,13 @@ public class Max_Min_Heap {
 	6) save the states after each operation together by calling save(out_path) function
 	 */
 	public void execution(String in_path, String out_path){
-		ArrayList<String> commands = new ArrayList<String>();
-	}
+		ArrayList<Strings> commands = readEverything (input_path);
 
+		//call heapConstruction here
+
+
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	// execution of bottom-up heap construction according to the algorithm
 
@@ -129,18 +206,7 @@ public class Max_Min_Heap {
 	private void heapConstruction(){
 		swapAssociates();
 	}
-
-	/*
-	For each number in min_heap that are associated with each number in max_heap, swap them
-	*/
-	private void swapAssociates(){
-		for (int i = posInHeap(min_heap, height(min_heap)); i > 0; i--) {
-			if ( associated(min_heap, max_heap, i) ) {
-				swapExternal(min_heap, max_heap, i);
-			}
-		}
-	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	If an external element in a min-heap and an external element in a max-heap share the same index in the array representation, they are associated.
 	*/
@@ -165,6 +231,17 @@ public class Max_Min_Heap {
 	}
 
 	/*
+	For each number in min_heap that are associated with each number in max_heap, swap them
+	*/
+	private void swapAssociates(){
+		for (int i = posInHeap(min_heap, height(min_heap)); i > 0; i--) {
+			if ( associated(min_heap, max_heap, i) ) {
+				swapExternal(min_heap, max_heap, i);
+			}
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
 	Returns the height of the given heap
 	*/
 	private int height(ArrayList<Integer> heap){
@@ -188,15 +265,7 @@ public class Max_Min_Heap {
 		}
 		return pos;
 	}
-
-	// execute the toMaxHeapify operation according to the algorithm
-	private void toMaxHeapify(int elem, int level){
-	}
-
-	// execute the toMinHeapify operation according to the algorithm
-	private void toMinHeapify(int elem, int level){
-	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	Remove element in the root position and move the last element to root position then downheap the element following a path toward an external node until swapping is not required.
 
@@ -316,9 +385,23 @@ public class Max_Min_Heap {
 		toMaxHeapify(elem2, level);
 	}
 
-	// save the data in the required format
-	private void save(String out_path){
+	// execute the toMaxHeapify operation according to the algorithm
+	private void toMaxHeapify(int elem, int level){
+	}
 
+	// execute the toMinHeapify operation according to the algorithm
+	private void toMinHeapify(int elem, int level){
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
+	Prints out the numbers of a heap
+	*/
+	private void printHeap (ArrayList<Integer> arrList){
+		System.out.println("\nThis is the following Array List:");
+		for (int num : arrList) {
+			System.out.print(num + " ");
+		}
+		System.out.println();
 	}
 
 	public static void main(String args[]) throws Exception{
