@@ -133,8 +133,12 @@ public class Max_Min_Heap {
 						numStr += ch;
 					}
 				}
-				cmds.add(str);
-				cmds.add(numStr);
+				if ( !str.isEmpty() ) {
+					cmds.add(str);
+				}
+				if ( !numStr.isEmpty() ) {
+					cmds.add(numStr);
+				}
 			}
 		}
 		return cmds;
@@ -152,17 +156,20 @@ public class Max_Min_Heap {
 		while ( cmd < listOfCmds.size() ) {
 			if ( cmd >= 3 ) {
 				if ( listOfCmds.get(cmd).equals("insert") ) {
+					System.out.println("Called insertItem method");
 					insertItem( Integer.parseInt( listOfCmds.get(++cmd) ) ) ;
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMin") ) {
+					System.out.println("Called removeMin method");
 					removeMin();
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMax") ) {
+					System.out.println("Called removeMax method");
 					removeMax();
 				}
+				printEverything();
 			}
 			cmd++;
-			printEverything();
 			saveToFile(out_path);
 		}
 	}
@@ -483,7 +490,7 @@ public class Max_Min_Heap {
 				result += arrList.get(i);
 			}
 			else {
-				result += arrList.get(i) + " ";
+				result += arrList.get(i) + "\n";
 			}
 		}
 		System.out.println(result + "\n");
@@ -508,7 +515,7 @@ public class Max_Min_Heap {
 		System.out.println("This is min heap: " + sendHeap(min_heap));
 		System.out.println("This is the buffer: " + buffer + "\n");
 	}
-
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	public static void main (String args[]) throws Exception{
 		Max_Min_Heap heap = new Max_Min_Heap();
 		String input_path = "input1.txt";
