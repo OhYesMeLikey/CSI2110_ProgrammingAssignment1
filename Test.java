@@ -6,7 +6,6 @@ public class Test{
     private static ArrayList<Integer> min_heap = new ArrayList<Integer>();
     private static Integer buffer = null;
 
-    /*
     private static void storeIntoHeaps(String[] arrOfStr, int size){
         ArrayList<Integer> arrOfNum = new ArrayList<Integer>();
 
@@ -133,51 +132,10 @@ public class Test{
 			e.printStackTrace();
 		}
 	}
-    */
-
-    private static String sendHeap (ArrayList<Integer> arrList){
-		String result = "";
-		for (int i = 0; i < arrList.size(); i++) {
-			if ( i == arrList.size() - 1 ) {
-				result += String.valueOf( arrList.get(i) );
-			}
-			else {
-				result += String.valueOf( arrList.get(i) ) + " ";
-			}
-		}
-		return result;
-	}
 
     private static void printEverything (){
-		System.out.println("This is the current state of everything:");
-		System.out.println("max heap: " + sendHeap(max_heap));
-		System.out.println("min heap: " + sendHeap(min_heap));
-		System.out.println("the buffer: " + buffer + "\n");
-	}
+        System.out.println("This is max heap: ");
 
-    private static void addEverything (){
-        max_heap.add(18);
-        max_heap.add(15);
-        max_heap.add(14);
-        max_heap.add(13);
-        max_heap.add(11);
-
-        min_heap.add(1);
-        min_heap.add(6);
-        min_heap.add(9);
-        min_heap.add(9);
-        min_heap.add(10);
-
-        buffer = 43;
-    }
-
-    private static void test (){
-        printEverything();
-        min_heap.set(0, null);
-        printEverything();
-        min_heap.set(0, buffer);
-        buffer = null;
-        printEverything();
     }
 
     public static void main(String[] args) throws Exception{
@@ -199,10 +157,7 @@ public class Test{
         */
         //int a = 3/2;
         //System.out.println(a);
-
-        addEverything();
-        test();
-
+        
     }
 
 }
