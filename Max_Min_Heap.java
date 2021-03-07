@@ -374,10 +374,50 @@ public class Max_Min_Heap {
 	/*
 	We apply downheap operation in max-heap for x and it is connected to upheap operation in the min-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in min-heap is level i . The default level i is the level of the root node in the min-heap.
 	*/
-	private void toMinHeapify (int elem, int pos){
+	/*private void toMinHeapify (int elem, int pos){
 		downHeapForMaxHeap(pos, max_heap);
 		swapAssociates();
 		upHeapForMinHeap(posOfElem(elem, min_heap), pos, min_heap);
+	}
+	*/
+
+	private void toMinHeapify (int elem, int pos){
+		int currentPos = posOfElem(elem, min_heap);
+
+		// While loop performs down heap on max_heap
+		while ( hasLeft(currentPos, heap) ) {
+			int leftIndex = left(currentPos);
+			int bigChildIndex = leftIndex;
+
+			if ( hasRight(currentPos, heap) ) {
+				int rightIndex = right(currentPos);
+				if ( compare(heap.get(rightIndex), heap.get(leftIndex)) > 0 ) {
+					bigChildIndex = rightIndex;
+				}
+			}
+
+			if ( compare(heap.get(currentPos), heap.get(bigChildIndex)) >= 0 ) {
+				break;
+			}
+
+			swap(currentPos, bigChildIndex, heap);
+			currentPos = bigChildIndex;
+		}
+
+		swapExternal(min_heap, max_heap, currentPos);
+
+		int currentLevel = height(max_heap);
+		while (currentLevel >= level) {
+			int p = parent(currentPos);
+			if ( compare( heap.get(currentPos), heap.get(p) ) >= 0 ) {
+				break;
+			}
+
+			swap(currentPos, p, heap);
+			currentPos = p;
+
+			currentLevel--;
+		}
 	}
 
 	private int posOfElem (int elem, ArrayList<Integer> heap){
