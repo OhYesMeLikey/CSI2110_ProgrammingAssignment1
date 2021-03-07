@@ -217,16 +217,15 @@ public class Max_Min_Heap {
 	Runs each command in the given listOfCmds which contains the sequential order of all of the commands from an input text file.
 	*/
 	private void runTheCommands (ArrayList<String> listOfCmds, String out_path){
-		//System.out.println("It works");
 		int cmd = 0;
-		//System.out.println("This is the list of commmands: ");
-		//printCmds (listOfCmds);
 		System.out.println("\n");
 		int removed = 0;
+		String message = "";
 
 		while ( cmd < listOfCmds.size() ) {
 			if ( cmd >= 3 ) {
 				if ( listOfCmds.get(cmd).equals("insert") ) {
+					message = listOfCmds.get(cmd) + " " + listOfCmds.get(cmd+1);
 					System.out.println(listOfCmds.get(cmd) + " " + listOfCmds.get(cmd+1));
 					insertItem( Integer.parseInt( listOfCmds.get(++cmd) ) ) ;
 				}
@@ -234,16 +233,18 @@ public class Max_Min_Heap {
 					System.out.println(listOfCmds.get(cmd));
 					removed = removeMin();
 					System.out.println("Removed num is: " + removed);
+					message = listOfCmds.get(cmd) + "\nRemoved num is: " + removed;
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMax") ) {
 					System.out.println(listOfCmds.get(cmd));
 					removed = removeMax();
 					System.out.println("Removed num is: " + removed);
+					message = listOfCmds.get(cmd) + "\nRemoved num is: " + removed;
 				}
 				printEverything();
+				saveToFile(out_path, message);
 			}
 			cmd++;
-			saveToFile(out_path);
 		}
 	}
 
@@ -284,9 +285,10 @@ public class Max_Min_Heap {
 	/*
 	save the data in the required format
 	*/
-	private void saveToFile (String out_path){
+	private void saveToFile (String out_path, String message){
 		try {
-			FileWriter myWriter = new FileWriter(out_path);
+			FileWriter myWriter = new FileWriter(out_path, true);
+			myWriter.write( message + "\n");
 			myWriter.write( transformIntoString(max_heap, "max-heap ") + "\n" );
 			myWriter.write( transformIntoString(min_heap, "min-heap ") + "\n" );
 			if ( buffer == null ) {
@@ -295,6 +297,7 @@ public class Max_Min_Heap {
 			else {
 				myWriter.write( "buffer " + buffer + "\n" );
 			}
+			myWriter.write( "\n" );
 			myWriter.close();
 			//System.out.println("Successfully wrote to the file.");
 		}
@@ -319,11 +322,26 @@ public class Max_Min_Heap {
 		System.out.println("\nThis is the initial state of everything = ");
 		printEverything();
 
+		saveToFile(out_path, "This is the initial state of everything = ");
+		saveToFile(out_path, commands.get(0) + " " + commands.get(1));
+		saveToFile(out_path, commands.get(2));
+
 		heapConstruction();
 		System.out.println("The following shows their respective heaps after construction");
 		printEverything();
 
-		saveToFile(out_path);
+		saveToFile(out_path, "This is current state after constructing the heaps");
+
+		/*for (int i = 3; i < commands.size(); i++) {
+			if ( commands.get(i).equals("insert") ) {
+				saveToFile(out_path, "insert" + " " + commands.get(i+1));
+				i++;
+			}
+			else {
+				saveToFile(out_path, commands.get(i));
+			}
+		}
+		*/
 
 		runTheCommands(commands, out_path);
 	}
