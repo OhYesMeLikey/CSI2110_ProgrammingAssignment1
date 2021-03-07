@@ -152,8 +152,6 @@ public class Max_Min_Heap {
 		//System.out.println("This is the list of commmands: ");
 		//printCmds (listOfCmds);
 		System.out.println("\n");
-		System.out.println("This is the initial state of everything = ");
-		printEverything();
 
 		while ( cmd < listOfCmds.size() ) {
 			if ( cmd >= 3 ) {
@@ -245,7 +243,12 @@ public class Max_Min_Heap {
 	public void execution (String in_path, String out_path) throws Exception{
 		ArrayList<String> commands = readEverything(in_path);
 
+		System.out.println("\nThis is the initial state of everything = ");
+		printEverything();
+
 		heapConstruction();
+		System.out.println("The following shows their respective heaps after construction");
+		printEverything();
 
 		saveToFile(out_path);
 
@@ -262,6 +265,8 @@ public class Max_Min_Heap {
 	*/
 	private void heapConstruction (){
 		swapAssociates();
+		System.out.println("After swapping associates");
+		printEverything();
 
 		for (int posInCurrentLevel = posInHeap(min_heap, height(min_heap) - 1);
 		posInCurrentLevel >= 1;
@@ -513,8 +518,8 @@ public class Max_Min_Heap {
 
 	private void printEverything (){
 		System.out.println("This is the current state of everything:");
-		System.out.println("max heap: " + sendHeap(max_heap));
 		System.out.println("min heap: " + sendHeap(min_heap));
+		System.out.println("max heap: " + sendHeap(max_heap));
 		System.out.println("the buffer: " + buffer + "\n");
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
