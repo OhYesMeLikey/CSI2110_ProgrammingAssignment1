@@ -11,36 +11,60 @@ public class Max_Min_Heap {
 	private ArrayList<Integer> min_heap;
 	private Integer buffer;
 	////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
+	Returns the position of the parent element
+	*/
 	private int parent (int j){
 		return ((j-1)/2);
 	}
 
+	/*
+	Returns the position of the left element
+	*/
 	private int left (int j){
 		return ((2*j) + 1);
 	}
 
+	/*
+	Returns the position of the right element
+	*/
 	private int right (int j){
 		return ((2*j) + 2);
 	}
 
+	/*
+	Returns true if a left element does exist
+	*/
 	private boolean hasLeft (int j, ArrayList<Integer> heap){
 		return (left(j) < heap.size());
 	}
 
+	/*
+	Returns true if a right element does exist
+	*/
 	private boolean hasRight (int j, ArrayList<Integer> heap){
 		return (right(j) < heap.size());
 	}
 
+	/*
+	Swaps the element at i with the element at j
+	*/
 	private void swap (int i, int j, ArrayList<Integer> heap){
 		Integer temp = heap.get(i);
 		heap.set(i, heap.get(j));
 		heap.set(j, temp);
 	}
 
+	/*
+	Returns the difference of a - b
+	*/
 	private int compare (Integer a, Integer b){
 		return a.compareTo(b);
 	}
 
+	/*
+	Performs up heap operation for min heap
+	*/
 	private void upHeapForMinHeap (int j, int endPos, ArrayList<Integer> heap){
 		while (j > endPos) {
 			int p = parent(j);
@@ -53,6 +77,9 @@ public class Max_Min_Heap {
 		}
 	}
 
+	/*
+	Performs up heap operation for max heap
+	*/
 	private void upHeapForMaxHeap (int j, int endPos, ArrayList<Integer> heap){
 		while (j > endPos) {
 			int p = parent(j);
@@ -65,6 +92,9 @@ public class Max_Min_Heap {
 		}
 	}
 
+	/*
+	Performs down heap operation for min heap
+	*/
 	private void downHeapForMinHeap (int j, ArrayList<Integer> heap){
 		while ( hasLeft(j, heap) ) {
 			int leftIndex = left(j);
@@ -86,6 +116,9 @@ public class Max_Min_Heap {
 		}
 	}
 
+	/*
+	Performs down heap operation for max heap
+	*/
 	private void downHeapForMaxHeap (int j, ArrayList<Integer> heap){
 		while ( hasLeft(j, heap) ) {
 			int leftIndex = left(j);
@@ -403,6 +436,9 @@ public class Max_Min_Heap {
 		}
 	}
 
+	/*
+	Returns the position of the given element from the given heap
+	*/
 	private int posOfElem (int elem, ArrayList<Integer> heap){
 		for (int i = 0; i < heap.size(); i++) {
 			if ( heap.get(i) == elem ) {
@@ -510,19 +546,18 @@ public class Max_Min_Heap {
 		}
 		else {
 			copy = min_heap.get(0);
-			min_heap.remove(0);
+			min_heap.set(0, null);
 
 			if ( buffer != null ) {
 				min_heap.set( 0, buffer );
 				buffer = null;
 			}
 			else if ( buffer == null ) {
-				min_heap.set( 0, min_heap.get( min_heap.size() - 1 ) );
+				min_heap.set( 0, min_heap.remove( min_heap.size() - 1 ) );
 				buffer = max_heap.remove( max_heap.size() - 1 );
 			}
-			else {
-				toMaxHeapify( min_heap.get(0), 0 );
-			}
+
+			toMaxHeapify(min_heap.get(0), 0);
 		}
 		return copy;
 	}
@@ -550,19 +585,18 @@ public class Max_Min_Heap {
 		}
 		else {
 			copy = max_heap.get(0);
-			max_heap.remove(0);
+			max_heap.set(0, null);
 
 			if ( buffer != null ) {
 				max_heap.set( 0, buffer );
 				buffer = null;
 			}
 			else if ( buffer == null ) {
-				max_heap.set( 0, max_heap.get( max_heap.size() - 1 ) );
+				max_heap.set( 0, max_heap.remove( max_heap.size() - 1 ) );
 				buffer = min_heap.remove( min_heap.size() - 1 );
 			}
-			else {
-				toMinHeapify ( max_heap.get(0), 0 );
-			}
+
+			toMinHeapify (max_heap.get(0), 0);
 		}
 		return copy;
 	}
@@ -614,6 +648,9 @@ public class Max_Min_Heap {
 		System.out.println(result);
 	}
 
+	/*
+	Prints out all of the stored commands in the list of commands
+	*/
 	private void printCmds (ArrayList<String> arrList){
 		String result = "";
 		for (int i = 0; i < arrList.size(); i++) {
@@ -627,6 +664,9 @@ public class Max_Min_Heap {
 		System.out.println(result + "\n");
 	}
 
+	/*
+	Returns a single line of string from the given list
+	*/
 	private String sendHeap (ArrayList<Integer> arrList){
 		String result = "";
 		for (int i = 0; i < arrList.size(); i++) {
@@ -640,6 +680,9 @@ public class Max_Min_Heap {
 		return result;
 	}
 
+	/*
+	Prints the max_heap, min_heap, and the buffer
+	*/
 	private void printEverything (){
 		System.out.println("This is the current state of everything:");
 		System.out.println("max heap: " + sendHeap(max_heap));
