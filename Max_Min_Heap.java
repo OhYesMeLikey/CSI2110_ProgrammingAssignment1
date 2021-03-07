@@ -302,16 +302,17 @@ public class Max_Min_Heap {
 	*/
 	private void heapConstruction (){
 		swapAssociates();
-		System.out.println("After swapping associates");
-		printEverything();
+		//System.out.println("After swapping associates");
+		//printEverything();
 
-		for (int currentLevel = height(min_heap) - 1; currentLevel >= 1; currentLevel--) {
+		// For this for loop, the height of the root is considered 0, and the next layer is considered 1, and the next next layer is 2, and etc...
+		for (int currentLevel = height(min_heap) - 1; currentLevel >= 0; currentLevel--) {
 			int elemForMinHeap = min_heap.get(posInHeap(min_heap, currentLevel));
 			int elemForMaxHeap = max_heap.get(posInHeap(max_heap, currentLevel));
 
-			System.out.println("current level: " + currentLevel);
-			System.out.println("elemForMinHeap: " + elemForMinHeap);
-			System.out.println("elemForMaxHeap: " + elemForMaxHeap);
+			//System.out.println("current level: " + currentLevel);
+			//System.out.println("elemForMinHeap: " + elemForMinHeap);
+			//System.out.println("elemForMaxHeap: " + elemForMaxHeap);
 
 			heapify(elemForMinHeap, elemForMaxHeap, currentLevel);
 		}
@@ -509,7 +510,7 @@ public class Max_Min_Heap {
 		}
 		else {
 			copy = min_heap.get(0);
-			min_heap.remove ( min_heap.size() - 1 );
+			min_heap.remove(0);
 
 			if ( buffer != null ) {
 				min_heap.set( 0, buffer );
@@ -549,7 +550,7 @@ public class Max_Min_Heap {
 		}
 		else {
 			copy = max_heap.get(0);
-			max_heap.remove( max_heap.size() - 1 );
+			max_heap.remove(0);
 
 			if ( buffer != null ) {
 				max_heap.set( 0, buffer );
@@ -641,8 +642,8 @@ public class Max_Min_Heap {
 
 	private void printEverything (){
 		System.out.println("This is the current state of everything:");
-		System.out.println("min heap: " + sendHeap(min_heap));
 		System.out.println("max heap: " + sendHeap(max_heap));
+		System.out.println("min heap: " + sendHeap(min_heap));
 		System.out.println("the buffer: " + buffer + "\n");
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
