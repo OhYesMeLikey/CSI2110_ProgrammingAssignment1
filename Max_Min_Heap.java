@@ -112,7 +112,6 @@ public class Max_Min_Heap {
 
 		while ((line = br.readLine()) != null){
 			System.out.println(line);
-			//System.out.println("This is line: " + line);
 			if ( line.length() > 0 && Character.isDigit(line.charAt(0)) ) {
 				String[] nums = line.split(" ");
 				storeIntoHeaps(nums, nums.length);
@@ -150,21 +149,24 @@ public class Max_Min_Heap {
 	private void runTheCommands (ArrayList<String> listOfCmds, String out_path){
 		//System.out.println("It works");
 		int cmd = 0;
-		System.out.println("This is the list of commmands: ");
-		printCmds (listOfCmds);
+		//System.out.println("This is the list of commmands: ");
+		//printCmds (listOfCmds);
+		System.out.println("\n");
+		System.out.println("This is the initial state of everything = ");
+		printEverything();
 
 		while ( cmd < listOfCmds.size() ) {
 			if ( cmd >= 3 ) {
 				if ( listOfCmds.get(cmd).equals("insert") ) {
-					System.out.println("Called insertItem method");
+					System.out.println(listOfCmds.get(cmd) + " " + listOfCmds.get(cmd+1));
 					insertItem( Integer.parseInt( listOfCmds.get(++cmd) ) ) ;
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMin") ) {
-					System.out.println("Called removeMin method");
+					System.out.println(listOfCmds.get(cmd));
 					removeMin();
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMax") ) {
-					System.out.println("Called removeMax method");
+					System.out.println(listOfCmds.get(cmd));
 					removeMax();
 				}
 				printEverything();
@@ -511,9 +513,9 @@ public class Max_Min_Heap {
 
 	private void printEverything (){
 		System.out.println("This is the current state of everything:");
-		System.out.println("This is max heap: " + sendHeap(max_heap));
-		System.out.println("This is min heap: " + sendHeap(min_heap));
-		System.out.println("This is the buffer: " + buffer + "\n");
+		System.out.println("max heap: " + sendHeap(max_heap));
+		System.out.println("min heap: " + sendHeap(min_heap));
+		System.out.println("the buffer: " + buffer + "\n");
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	public static void main (String args[]) throws Exception{
