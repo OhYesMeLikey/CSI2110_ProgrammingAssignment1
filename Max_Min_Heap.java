@@ -322,8 +322,10 @@ public class Max_Min_Heap {
 	For each number in min_heap that are associated with each number in max_heap, swap them
 	*/
 	private void swapAssociates (){
-		for (int i = posInHeap( min_heap, height(min_heap) ); i > 0; i--) {
-			if ( associated(min_heap, max_heap, i) ) {
+		for (int i = 0; i < min_heap.size(); i++) {
+			if ( !hasLeft(i, min_heap) &&
+				!hasRight(i, min_heap) &&
+				associated(min_heap, max_heap, i) ) {
 				swapExternal(min_heap, max_heap, i);
 			}
 		}
