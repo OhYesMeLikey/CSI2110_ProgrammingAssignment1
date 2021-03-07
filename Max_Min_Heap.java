@@ -363,7 +363,7 @@ public class Max_Min_Heap {
 	We apply downheap operation in max-heap for x and it is connected to upheap operation in the min-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in min-heap is level i . The default level i is the level of the root node in the min-heap.
 	*/
 	private void toMinHeapify (int elem, int level){
-		int currentPos = posOfElem(elem, min_heap);
+		int currentPos = posOfElem(elem, max_heap);
 
 		// While loop performs down heap on max_heap
 		while ( hasLeft(currentPos, max_heap) ) {
@@ -415,7 +415,12 @@ public class Max_Min_Heap {
 	Calls the methods toMinHeapify and toMaxHeapify to fix the structures of how a min heap and max heap should be like
 	*/
 	private void heapify (Integer minHeapElem, Integer maxHeapElem, int level){
+		//System.out.println("Calling toMaxHeapify");
 		toMaxHeapify(minHeapElem, level);
+		//System.out.println("Current state of everything");
+		//printEverything();
+
+		//System.out.println("Calling toMinHeapify");
 		toMinHeapify(maxHeapElem, level);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
