@@ -134,7 +134,7 @@ public class Test{
 	}
 
     private static void printEverything (){
-        System.out.println("This is max heap: " + );
+        System.out.println("This is max heap: ");
 
     }
 
@@ -155,6 +155,8 @@ public class Test{
         createFile(output1);
         saveToFile(output1);
         */
+        int a = 3/2;
+        System.out.println(a);
 
     }
 

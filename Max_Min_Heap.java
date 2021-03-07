@@ -1,3 +1,7 @@
+/*
+Student Name: Leo Tan
+Student Number: 300018447
+*/
 import java.util.ArrayList;
 import java.lang.Math;
 import java.io.*;
@@ -37,8 +41,8 @@ public class Max_Min_Heap {
 		return a.compareTo(b);
 	}
 
-	private void upHeap (int j, ArrayList<Integer> heap){
-		while (j > 0) {
+	private void upHeapForMinHeap (int j, int endPos, ArrayList<Integer> heap){
+		while (j > endPos) {
 			int p = parent(j);
 			if ( compare( heap.get(j), heap.get(p) ) >= 0 ) {
 				break;
@@ -49,7 +53,19 @@ public class Max_Min_Heap {
 		}
 	}
 
-	private void downHeap (int j, ArrayList<Integer> heap){
+	private void upHeapForMaxHeap (int j, int endPos, ArrayList<Integer> heap){
+		while (j > endPos) {
+			int p = parent(j);
+			if ( compare( heap.get(p), heap.get(j) ) >= 0 ) {
+				break;
+			}
+
+			swap(j, p, heap);
+			j = p;
+		}
+	}
+
+	private void downHeapForMinHeap (int j, ArrayList<Integer> heap){
 		while ( hasLeft(j, heap) ) {
 			int leftIndex = left(j);
 			int smallChildIndex = leftIndex;
@@ -67,6 +83,27 @@ public class Max_Min_Heap {
 
 			swap(j, smallChildIndex, heap);
 			j = smallChildIndex;
+		}
+	}
+
+	private void downHeapForMaxHeap (int j, ArrayList<Integer> heap){
+		while ( hasLeft(j, heap) ) {
+			int leftIndex = left(j);
+			int bigChildIndex = leftIndex;
+
+			if ( hasRight(j, heap) ) {
+				int rightIndex = right(j);
+				if ( compare(heap.get(rightIndex), heap.get(leftIndex)) > 0 ) {
+					bigChildIndex = rightIndex;
+				}
+			}
+
+			if ( compare(heap.get(j), heap.get(bigChildIndex)) >= 0 ) {
+				break;
+			}
+
+			swap(j, bigChildIndex, heap);
+			j = bigChildIndex;
 		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,34 +302,99 @@ public class Max_Min_Heap {
 	*/
 	private void heapConstruction (){
 		swapAssociates();
-		System.out.println("After swapping associates");
-		printEverything();
+		//System.out.println("After swapping associates");
+		//printEverything();
 
-		for (int posInCurrentLevel = posInHeap(min_heap, height(min_heap) - 1);
-		posInCurrentLevel >= 1;
-		posInCurrentLevel--) {
-			toMaxHeapify(min_heap.get(posInCurrentLevel), posInCurrentLevel);
-
-			toMinHeapify(max_heap.get(posInCurrentLevel), posInCurrentLevel);
+		/*(for (int posInCurrentLevel = min_heap.size() - 1;
+			posInCurrentLevel >= 1;
+			posInCurrentLevel--) {
+				heapify(min_heap.get(posInCurrentLevel),
+						max_heap.get(posInCurrentLevel),
+						posInCurrentLevel);
+		}
+		*/
+		for (int currentLevel = height(min_heap) - 1; currentLevel >= 1; currentLevel--) {
+			int elemForMinHeap = min_heap.get(posInHeap(min_heap,level));
+			//toMaxHeapify(elemForMinHeap, level);
 		}
 	}
 
 	/*
 	We apply downheap operation in min-heap for x and it is connected to upheap operation in the max-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in max-heap is level i . The default level i is the level of the root node in the max-heap.
 	*/
-	private void toMaxHeapify (int elem, int pos){
-		downHeap(pos, min_heap);
-		swapExternal( min_heap, max_heap, posInHeap( min_heap, height(min_heap) ) );
-		upHeap( posInHeap( max_heap, height(max_heap) ), max_heap );
+	/*private void toMaxHeapify (int elem, int level){
+		int pos1 = posInHeap(min_heap, level);
+		int pos2 = posInHeap(max_heap, level);
+
+		downHeapForMinHeap(pos1, min_heap);
+		swapAssociates();
+		upHeapForMaxHeap(posOfElem(elem, max_heap), pos1, max_heap);
+	}
+	*/
+
+	private void toMaxHeapify (int elem, int level){
+		int currentPos = posOfElem(elem, min_heap);
+
+		// While loop performs down heap on min_heap
+		while ( hasLeft(currentPos, min_heap) ) {
+			int leftIndex = left(currentPos);
+			int smallChildIndex = leftIndex;
+
+			if ( hasRight(currentPos, min_heap) ) {
+				int rightIndex = right(currentPos);
+				if ( compare(min_heap.get(leftIndex), min_heap.get(rightIndex)) > 0 ) {
+					smallChildIndex = rightIndex;
+				}
+			}
+
+			if ( compare(min_heap.get(smallChildIndex), min_heap.get(currentPos)) >= 0 ) {
+				break;
+			}
+
+			swap(currentPos, smallChildIndex, min_heap);
+			currentPos = smallChildIndex;
+		}
+
+		swapExternal(min_heap, max_heap, currentPos);
+
+		int currentLevel = height(max_heap);
+		//While loop performs up heap for max_heap
+		while (currentLevel > level) {
+			int p = parent(currentPos);
+			if ( compare( heap.get(currentPos), heap.get(p) ) >= 0 ) {
+				break;
+			}
+			swap(currentPos, p, heap);
+			currentPos = p;
+
+			currentLevel--;
+		}
 	}
 
 	/*
 	We apply downheap operation in max-heap for x and it is connected to upheap operation in the min-heap up to a level i through possible external element swap using swapExternal operation. The final level for upheap in min-heap is level i . The default level i is the level of the root node in the min-heap.
 	*/
 	private void toMinHeapify (int elem, int pos){
-		downHeap(pos, max_heap);
-		swapExternal( min_heap, max_heap, posInHeap( max_heap, height(max_heap) ) );
-		upHeap( posInHeap( min_heap, height(min_heap) ), min_heap );
+		downHeapForMaxHeap(pos, max_heap);
+		swapAssociates();
+		upHeapForMinHeap(posOfElem(elem, min_heap), pos, min_heap);
+	}
+
+	private int posOfElem (int elem, ArrayList<Integer> heap){
+		for (int i = 0; i < heap.size(); i++) {
+			if ( heap.get(i) == elem ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/*
+	Calls the methods toMinHeapify and toMaxHeapify to fix the structures of how a min heap and max heap should be like
+	*/
+	private void heapify (Integer elem1, Integer elem2, int pos){
+		toMaxHeapify(elem2, pos);
+		toMinHeapify(elem1, pos);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
@@ -463,16 +565,12 @@ public class Max_Min_Heap {
 			}
 			buffer = null;
 
-			heapify ( min_heap.get(min_heap.size() - 1), max_heap.get(max_heap.size() - 1), posInHeap ( min_heap, height(min_heap) ) );
+			for (int i = min_heap.size() - 1; i >= 1; i--) {
+				//heapify(min_heap.get(min_heap.size() - 1), max_heap.get(max_heap.size() - 1), i);
+				//toMaxHeapify(min_heap.get(i), );
+				//toMinHeapify();
+			}
 		}
-	}
-
-	/*
-	Calls the methods toMinHeapify and toMaxHeapify to fix the structures of how a min heap and max heap should be like
-	*/
-	private void heapify (int elem1, int elem2, int level){
-		toMinHeapify(elem1, level);
-		toMaxHeapify(elem2, level);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
