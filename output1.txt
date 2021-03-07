@@ -1,3 +1,3 @@
-max-heap 15 43 14 13
+max-heap 18 15 14 13
 min-heap 6 9 9 11
 buffer 10

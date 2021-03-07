@@ -222,6 +222,7 @@ public class Max_Min_Heap {
 		//System.out.println("This is the list of commmands: ");
 		//printCmds (listOfCmds);
 		System.out.println("\n");
+		int removed = 0;
 
 		while ( cmd < listOfCmds.size() ) {
 			if ( cmd >= 3 ) {
@@ -231,11 +232,13 @@ public class Max_Min_Heap {
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMin") ) {
 					System.out.println(listOfCmds.get(cmd));
-					removeMin();
+					removed = removeMin();
+					System.out.println("Removed num is: " + removed);
 				}
 				else if ( listOfCmds.get(cmd).equals("removeMax") ) {
 					System.out.println(listOfCmds.get(cmd));
-					removeMax();
+					removed = removeMax();
+					System.out.println("Removed num is: " + removed);
 				}
 				printEverything();
 			}
@@ -335,8 +338,6 @@ public class Max_Min_Heap {
 	*/
 	private void heapConstruction (){
 		swapAssociates();
-		//System.out.println("After swapping associates");
-		//printEverything();
 
 		// For this for loop, the height of the root is considered 0, and the next layer is considered 1, and the next next layer is 2, and etc...
 		for (int currentLevel = height(min_heap) - 1; currentLevel >= 0; currentLevel--) {
@@ -377,13 +378,17 @@ public class Max_Min_Heap {
 			currentPos = smallChildIndex;
 		}
 
+		//System.out.println("Before swap");
+		//printEverything();
 		swapExternal(min_heap, max_heap, currentPos);
+		//System.out.println("After swap");
+		//printEverything();
 
-		int currentLevel = height(max_heap);
+		int currentLevel = height(max_heap) - level;
 		//While loop performs up heap on max_heap
 		while (currentLevel > level) {
 			int p = parent(currentPos);
-			if ( compare( max_heap.get(currentPos), max_heap.get(p) ) >= 0 ) {
+			if ( compare( max_heap.get(p), max_heap.get(currentPos) ) >= 0 ) {
 				break;
 			}
 			swap(currentPos, p, max_heap);
@@ -421,7 +426,7 @@ public class Max_Min_Heap {
 
 		swapExternal(min_heap, max_heap, currentPos);
 
-		int currentLevel = height(max_heap);
+		int currentLevel = height(max_heap) - level;
 		// While loop performs up heap on min_heap
 		while (currentLevel >= level) {
 			int p = parent(currentPos);
@@ -549,7 +554,7 @@ public class Max_Min_Heap {
 			min_heap.set(0, null);
 
 			if ( buffer != null ) {
-				min_heap.set( 0, buffer );
+				min_heap.set(0, buffer);
 				buffer = null;
 			}
 			else if ( buffer == null ) {
