@@ -332,17 +332,6 @@ public class Max_Min_Heap {
 
 		saveToFile(out_path, "This is current state after constructing the heaps");
 
-		/*for (int i = 3; i < commands.size(); i++) {
-			if ( commands.get(i).equals("insert") ) {
-				saveToFile(out_path, "insert" + " " + commands.get(i+1));
-				i++;
-			}
-			else {
-				saveToFile(out_path, commands.get(i));
-			}
-		}
-		*/
-
 		runTheCommands(commands, out_path);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -361,10 +350,6 @@ public class Max_Min_Heap {
 		for (int currentLevel = height(min_heap) - 1; currentLevel >= 0; currentLevel--) {
 			int elemForMinHeap = min_heap.get(posInHeap(min_heap, currentLevel));
 			int elemForMaxHeap = max_heap.get(posInHeap(max_heap, currentLevel));
-
-			//System.out.println("current level: " + currentLevel);
-			//System.out.println("elemForMinHeap: " + elemForMinHeap);
-			//System.out.println("elemForMaxHeap: " + elemForMaxHeap);
 
 			heapify(elemForMinHeap, elemForMaxHeap, currentLevel);
 		}
@@ -715,8 +700,19 @@ public class Max_Min_Heap {
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	public static void main (String args[]) throws Exception{
 		Max_Min_Heap heap = new Max_Min_Heap();
-		String input_path = "input1.txt";
-		String output_path = "output1.txt";
+		//String input_path = "input1.txt";
+		//String output_path = "output1.txt";
+		String output_path = "";
+		String input_path = args[0];
+		if ( input_path.equals("input1.txt") ) {
+			output_path = "output1.txt";
+		}
+		else if ( input_path.equals("input2.txt") ) {
+			output_path = "output2.txt";
+		}
+		else {
+			output_path = "output.txt";
+		}
 		heap.execution(input_path, output_path);
 	}
 }
