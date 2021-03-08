@@ -346,11 +346,15 @@ public class Max_Min_Heap {
 	private void heapConstruction (){
 		swapAssociates();
 
+		System.out.println("After initial swaps");
+		printEverything();
+
 		// For this for loop, the height of the root is considered 0, and the next layer is considered 1, and the next next layer is 2, and etc...
 		for (int currentLevel = height(min_heap) - 1; currentLevel >= 0; currentLevel--) {
 			int elemForMinHeap = min_heap.get(posInHeap(min_heap, currentLevel));
 			int elemForMaxHeap = max_heap.get(posInHeap(max_heap, currentLevel));
 
+			System.out.println("The current level is " + currentLevel);
 			heapify(elemForMinHeap, elemForMaxHeap, currentLevel);
 		}
 	}
@@ -445,28 +449,18 @@ public class Max_Min_Heap {
 	}
 
 	/*
-	Returns the position of the given element from the given heap
-	*/
-	private int posOfElem (int elem, ArrayList<Integer> heap){
-		for (int i = 0; i < heap.size(); i++) {
-			if ( heap.get(i) == elem ) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	/*
 	Calls the methods toMinHeapify and toMaxHeapify to fix the structures of how a min heap and max heap should be like
 	*/
 	private void heapify (Integer minHeapElem, Integer maxHeapElem, int level){
 		//System.out.println("Calling toMaxHeapify");
 		toMaxHeapify(minHeapElem, level);
-		//System.out.println("Current state of everything");
-		//printEverything();
+		System.out.println("Current state of everything after calling toMaxHeapify");
+		printEverything();
 
 		//System.out.println("Calling toMinHeapify");
 		toMinHeapify(maxHeapElem, level);
+		System.out.println("Current state of everything after calling toMinHeapify");
+		printEverything();
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
@@ -528,6 +522,18 @@ public class Max_Min_Heap {
 			}
 		}
 		return pos;
+	}
+
+	/*
+	Returns the position of the given element from the given heap
+	*/
+	private int posOfElem (int elem, ArrayList<Integer> heap){
+		for (int i = 0; i < heap.size(); i++) {
+			if ( heap.get(i) == elem ) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
