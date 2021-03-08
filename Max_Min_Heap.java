@@ -214,41 +214,6 @@ public class Max_Min_Heap {
 	}
 
 	/*
-	Runs each command in the given listOfCmds which contains the sequential order of all of the commands from an input text file.
-	*/
-	private void runTheCommands (ArrayList<String> listOfCmds, String out_path){
-		int cmd = 0;
-		System.out.println("\n");
-		int removed = 0;
-		String message = "";
-
-		while ( cmd < listOfCmds.size() ) {
-			if ( cmd >= 3 ) {
-				if ( listOfCmds.get(cmd).equals("insert") ) {
-					message = listOfCmds.get(cmd) + " " + listOfCmds.get(cmd+1);
-					System.out.println(listOfCmds.get(cmd) + " " + listOfCmds.get(cmd+1));
-					insertItem( Integer.parseInt( listOfCmds.get(++cmd) ) ) ;
-				}
-				else if ( listOfCmds.get(cmd).equals("removeMin") ) {
-					System.out.println(listOfCmds.get(cmd));
-					removed = removeMin();
-					System.out.println("Removed num is: " + removed);
-					message = listOfCmds.get(cmd) + "\nRemoved num is: " + removed;
-				}
-				else if ( listOfCmds.get(cmd).equals("removeMax") ) {
-					System.out.println(listOfCmds.get(cmd));
-					removed = removeMax();
-					System.out.println("Removed num is: " + removed);
-					message = listOfCmds.get(cmd) + "\nRemoved num is: " + removed;
-				}
-				printEverything();
-				saveToFile(out_path, message);
-			}
-			cmd++;
-		}
-	}
-
-	/*
 	Create a text file that contains the contents max_heap, min_heap, and buffer to the given output path
 	*/
 	private void createFile (String out_path){
@@ -306,6 +271,41 @@ public class Max_Min_Heap {
 			e.printStackTrace();
 		}
 	}
+
+	/*
+	Runs each command in the given listOfCmds which contains the sequential order of all of the commands from an input text file.
+	*/
+	private void runTheCommands (ArrayList<String> listOfCmds, String out_path){
+		int cmd = 0;
+		System.out.println("\n");
+		int removed = 0;
+		String message = "";
+
+		while ( cmd < listOfCmds.size() ) {
+			if ( cmd >= 3 ) {
+				if ( listOfCmds.get(cmd).equals("insert") ) {
+					message = listOfCmds.get(cmd) + " " + listOfCmds.get(cmd+1);
+					System.out.println(listOfCmds.get(cmd) + " " + listOfCmds.get(cmd+1));
+					insertItem( Integer.parseInt( listOfCmds.get(++cmd) ) ) ;
+				}
+				else if ( listOfCmds.get(cmd).equals("removeMin") ) {
+					System.out.println(listOfCmds.get(cmd));
+					removed = removeMin();
+					System.out.println("Removed num is: " + removed);
+					message = listOfCmds.get(cmd) + "\nRemoved num is: " + removed;
+				}
+				else if ( listOfCmds.get(cmd).equals("removeMax") ) {
+					System.out.println(listOfCmds.get(cmd));
+					removed = removeMax();
+					System.out.println("Removed num is: " + removed);
+					message = listOfCmds.get(cmd) + "\nRemoved num is: " + removed;
+				}
+				printEverything();
+				saveToFile(out_path, message);
+			}
+			cmd++;
+		}
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	1) read the data and save into max_heap, min_heap, and buffer;
@@ -351,11 +351,45 @@ public class Max_Min_Heap {
 
 		// For this for loop, the height of the root is considered 0, and the next layer is considered 1, and the next next layer is 2, and etc...
 		for (int currentLevel = height(min_heap) - 1; currentLevel >= 0; currentLevel--) {
-			int elemForMinHeap = min_heap.get(posInHeap(min_heap, currentLevel));
-			int elemForMaxHeap = max_heap.get(posInHeap(max_heap, currentLevel));
 
-			System.out.println("The current level is " + currentLevel);
-			heapify(elemForMinHeap, elemForMaxHeap, currentLevel);
+			ArrayList<Integer> listOfNumInLevelInMinHeap = new ArrayList<Integer>();
+			ArrayList<Integer> listOfNumInLevelInMaxHeap = new ArrayList<Integer>();
+
+			int startingPosInLevel = posInHeap(min_heap, currentLevel);
+			int sizeOfCurrentLevel = posInHeap(min_heap, currentLevel) + (int) Math.pow(2, currentLevel);
+			for (int i = startingPosInLevel; i < sizeOfCurrentLevel; i++) {
+				listOfNumInLevelInMinHeap.add(min_heap.get(i));
+			}
+
+			startingPosInLevel = posInHeap(max_heap, currentLevel);
+			sizeOfCurrentLevel = posInHeap(max_heap, currentLevel) + (int) Math.pow(2, currentLevel);
+			for (int i = startingPosInLevel; i < sizeOfCurrentLevel; i++) {
+				listOfNumInLevelInMaxHeap.add(max_heap.get(i));
+			}
+			//int elemForMinHeap = min_heap.get(posInHeap(min_heap, currentLevel));
+			//int elemForMaxHeap = max_heap.get(posInHeap(max_heap, currentLevel));
+
+			//System.out.println("elemForMaxHeap: " + elemForMaxHeap);
+			//System.out.println("elemForMinHeap: " + elemForMinHeap);
+
+			for (int i = listOfNumInLevelInMinHeap.size() - 1; i >= 0; i--) {
+				System.out.println("The current level is " + currentLevel);
+
+				toMaxHeapify(listOfNumInLevelInMinHeap.get(i), currentLevel);
+
+				System.out.println("Result after performing toMaxHeapify on " +
+				listOfNumInLevelInMinHeap.get(i));
+				printEverything();
+			}
+			for (int i = listOfNumInLevelInMaxHeap.size() - 1; i >= 0; i--) {
+				System.out.println("The current level is " + currentLevel);
+
+				toMinHeapify(listOfNumInLevelInMaxHeap.get(i), currentLevel);
+
+				System.out.println("Result after performing toMinHeapify on " + listOfNumInLevelInMaxHeap.get(i));
+				printEverything();
+			}
+			//heapify(elemForMinHeap, elemForMaxHeap, currentLevel);
 		}
 	}
 
