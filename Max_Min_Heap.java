@@ -346,8 +346,8 @@ public class Max_Min_Heap {
 	private void heapConstruction (){
 		swapAssociates();
 
-		System.out.println("After initial swaps");
-		printEverything();
+		//System.out.println("After initial swaps");
+		//printEverything();
 
 		// For this for loop, the height of the root is considered 0, and the next layer is considered 1, and the next next layer is 2, and etc...
 		for (int currentLevel = height(min_heap) - 1; currentLevel >= 0; currentLevel--) {
@@ -492,13 +492,13 @@ public class Max_Min_Heap {
 	private void heapify (Integer minHeapElem, Integer maxHeapElem, int level){
 		//System.out.println("Calling toMaxHeapify");
 		toMaxHeapify(minHeapElem, level);
-		System.out.println("Current state of everything after calling toMaxHeapify");
-		printEverything();
+		//System.out.println("Current state of everything after calling toMaxHeapify");
+		//printEverything();
 
 		//System.out.println("Calling toMinHeapify");
 		toMinHeapify(maxHeapElem, level);
-		System.out.println("Current state of everything after calling toMinHeapify");
-		printEverything();
+		//System.out.println("Current state of everything after calling toMinHeapify");
+		//printEverything();
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
@@ -680,6 +680,7 @@ public class Max_Min_Heap {
 			buffer = null;
 
 			heapConstruction();
+			//heapify(min_heap.get(min_heap.size() - 1), max_heap.get(max_heap.size() - 1), height(min_heap) - 1);
 		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
