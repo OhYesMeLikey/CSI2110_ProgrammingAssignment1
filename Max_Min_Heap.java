@@ -373,21 +373,20 @@ public class Max_Min_Heap {
 			//System.out.println("elemForMinHeap: " + elemForMinHeap);
 
 			for (int i = listOfNumInLevelInMinHeap.size() - 1; i >= 0; i--) {
-				System.out.println("The current level is " + currentLevel);
+				//System.out.println("The current level is " + currentLevel);
 
 				toMaxHeapify(listOfNumInLevelInMinHeap.get(i), currentLevel);
 
-				System.out.println("Result after performing toMaxHeapify on " +
-				listOfNumInLevelInMinHeap.get(i));
-				printEverything();
+				//System.out.println("Result after performing toMaxHeapify on " + listOfNumInLevelInMinHeap.get(i));
+				//printEverything();
 			}
 			for (int i = listOfNumInLevelInMaxHeap.size() - 1; i >= 0; i--) {
-				System.out.println("The current level is " + currentLevel);
+				//System.out.println("The current level is " + currentLevel);
 
 				toMinHeapify(listOfNumInLevelInMaxHeap.get(i), currentLevel);
 
-				System.out.println("Result after performing toMinHeapify on " + listOfNumInLevelInMaxHeap.get(i));
-				printEverything();
+				//System.out.println("Result after performing toMinHeapify on " + listOfNumInLevelInMaxHeap.get(i));
+				//printEverything();
 			}
 			//heapify(elemForMinHeap, elemForMaxHeap, currentLevel);
 		}
@@ -419,24 +418,27 @@ public class Max_Min_Heap {
 			currentPos = smallChildIndex;
 		}
 
-		//System.out.println("Before swap");
-		//printEverything();
-		swapExternal(min_heap, max_heap, currentPos);
-		//System.out.println("After swap");
-		//printEverything();
+		if ( min_heap.get(currentPos).compareTo( max_heap.get(currentPos) ) > 0 ) {
+			//System.out.println("Before swap");
+			//printEverything();
+			swapExternal(min_heap, max_heap, currentPos);
+			//System.out.println("After swap");
+			//printEverything();
 
-		int currentLevel = height(max_heap) - level;
-		//While loop performs up heap on max_heap
-		while (currentLevel > level) {
-			int p = parent(currentPos);
-			if ( compare( max_heap.get(p), max_heap.get(currentPos) ) >= 0 ) {
-				break;
+			int currentLevel = height(max_heap) - level;
+			//While loop performs up heap on max_heap
+			while (currentLevel > level) {
+				int p = parent(currentPos);
+				if ( compare( max_heap.get(p), max_heap.get(currentPos) ) >= 0 ) {
+					break;
+				}
+				swap(currentPos, p, max_heap);
+				currentPos = p;
+
+				currentLevel--;
 			}
-			swap(currentPos, p, max_heap);
-			currentPos = p;
-
-			currentLevel--;
 		}
+
 	}
 
 	/*
@@ -465,20 +467,22 @@ public class Max_Min_Heap {
 			currentPos = bigChildIndex;
 		}
 
-		swapExternal(min_heap, max_heap, currentPos);
+		if ( min_heap.get(currentPos).compareTo( max_heap.get(currentPos) ) > 0 ) {
+			swapExternal(min_heap, max_heap, currentPos);
 
-		int currentLevel = height(max_heap) - level;
-		// While loop performs up heap on min_heap
-		while (currentLevel >= level) {
-			int p = parent(currentPos);
-			if ( compare( min_heap.get(currentPos), min_heap.get(p) ) >= 0 ) {
-				break;
+			int currentLevel = height(max_heap) - level;
+			// While loop performs up heap on min_heap
+			while (currentLevel >= level) {
+				int p = parent(currentPos);
+				if ( compare( min_heap.get(currentPos), min_heap.get(p) ) >= 0 ) {
+					break;
+				}
+
+				swap(currentPos, p, min_heap);
+				currentPos = p;
+
+				currentLevel--;
 			}
-
-			swap(currentPos, p, min_heap);
-			currentPos = p;
-
-			currentLevel--;
 		}
 	}
 
